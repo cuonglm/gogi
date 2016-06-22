@@ -38,6 +38,17 @@ func main() {
 }
 ```
 
+Install binary:
+```sh
+$ go get github.com/Gnouc/gogi/gogi
+$ gogi
+Usage of gogi:
+  -create string
+    	Create .gitignore file for given types
+  -list
+    	List all defined types
+```
+
 #Environment variables
 
 `GOGI_API_URL` to change your gitignore server, default to https://www.gitignore.io
