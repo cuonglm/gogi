@@ -10,7 +10,6 @@ import (
 const (
 	version       = "0.0.1"
 	ua            = "gogi/" + version
-	mediaType     = "application/json"
 	defaultAPIURL = "https://www.gitignore.io"
 	typePath      = "/api"
 	envAPIURL     = "GOGI_API_URL"
