@@ -44,9 +44,11 @@ $ go get github.com/Gnouc/gogi/gogi
 $ gogi
 Usage of gogi:
   -create string
-    	Create .gitignore file for given types
+    	Create .gitignore content for given types
   -list
     	List all defined types
+  -search string
+    	Show all types match string
 ```
 
 #Environment variables
