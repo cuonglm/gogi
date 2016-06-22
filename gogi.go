@@ -22,7 +22,7 @@ type Client struct {
 	APIURL    *url.URL
 }
 
-// NewHTTPClient create new goci client
+// NewHTTPClient create new gogi client
 func NewHTTPClient(client *http.Client) *Client {
 	if client == nil {
 		client = http.DefaultClient
@@ -91,7 +91,7 @@ func (c *Client) List() (*http.Response, error) {
 	return resp, nil
 }
 
-// Create create .gitignore file for input type
+// Create create .gitignore content for input type
 func (c *Client) Create(typeName string) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%s", typePath, typeName)
 	req, err := c.NewRequest("GET", path, nil)
