@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	"strings"
 
 	"github.com/Gnouc/gogi"
 )
@@ -14,12 +14,14 @@ import (
 var (
 	listFlag   bool
 	createFlag string
+	searchFlag string
 	gogiClient *gogi.Client
 )
 
 func init() {
 	flag.BoolVar(&listFlag, "list", false, "List all defined types")
-	flag.StringVar(&createFlag, "create", "", "Create .gitignore file for given types")
+	flag.StringVar(&createFlag, "create", "", "Create .gitignore content for given types")
+	flag.StringVar(&searchFlag, "search", "", "Show all types match string")
 
 	gogiClient = gogi.NewHTTPClient(nil)
 }
@@ -27,16 +29,20 @@ func init() {
 func main() {
 	flag.Parse()
 
-	switch flag.NFlag() {
-	case 1:
-		if listFlag {
+	n := flag.NFlag()
+	switch {
+	case n == 1:
+		switch {
+		case listFlag:
 			list()
-		}
-		if createFlag != "" {
+		case createFlag != "":
 			create(createFlag)
+		case searchFlag != "":
+			search(searchFlag)
 		}
-	case 2:
-		log.Println("Only one action allow.")
+	case n >= 2:
+		fmt.Println("Only one action allow.")
+		fmt.Println()
 		fallthrough
 	default:
 		flag.Usage()
@@ -45,15 +51,29 @@ func main() {
 
 func list() {
 	resp, _ := gogiClient.List()
-	printResponse(resp)
+	data := extractResponse(resp)
+	fmt.Println(data)
 }
 
 func create(s string) {
 	resp, _ := gogiClient.Create(s)
-	printResponse(resp)
+	data := extractResponse(resp)
+	fmt.Println(data)
 }
 
-func printResponse(resp *http.Response) {
+func search(s string) {
+	resp, _ := gogiClient.List()
+	data := extractResponse(resp)
+	data = strings.Replace(data, "\n", ",", -1)
+
+	for _, v := range strings.Split(data, ",") {
+		if strings.Contains(v, s) {
+			fmt.Println(v)
+		}
+	}
+}
+
+func extractResponse(resp *http.Response) string {
 	body, err := ioutil.ReadAll(resp.Body)
 	if body != nil {
 		defer func() {
@@ -65,6 +85,5 @@ func printResponse(resp *http.Response) {
 		log.Fatal(err)
 	}
 
-	fmt.Println(string(body))
-	os.Exit(0)
+	return string(body)
 }
