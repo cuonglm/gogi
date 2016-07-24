@@ -13,6 +13,8 @@ go get -u github.com/Gnouc/gogi
 ```
 
 #Usage
+
+## As library
 ```sh
 import (
 	"fmt"
@@ -38,7 +40,7 @@ func main() {
 }
 ```
 
-Install binary:
+## As binary:
 ```sh
 $ go get github.com/Gnouc/gogi/gogi
 $ gogi
@@ -49,6 +51,28 @@ Usage of gogi:
     	List all defined types
   -search string
     	Show all types match string
+```
+
+## Using docker
+
+### Using `gnouc/gogi` image
+```sh
+$ docker pull gnouc/gogi
+$ docker run --rm gnouc/gogi -search python
+ipythonnotebook
+python
+```
+
+### Building your own image
+
+Building builder image
+```sh
+docker build -t gogi-builder -f Dockerfile.build .
+```
+
+Building binary image
+```sh
+docker run --rm gogi-builder | docker build -t gogi -f Dockerfile.run -
 ```
 
 #Environment variables
