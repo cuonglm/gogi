@@ -85,4 +85,4 @@ Cuong Manh Le <cuong.manhle.vn@gmail.com>
 
 #License
 
-See [LICENSE](https://github.com/Gnouc/godt/blob/master/LICENSE)
+See [LICENSE](https://github.com/Gnouc/gogi/blob/master/LICENSE)
