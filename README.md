@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Gnouc/gogi.svg?branch=master)](https://travis-ci.org/Gnouc/gogi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Gnouc/gogi)](https://goreportcard.com/report/github.com/Gnouc/gogi)
+[![GoDoc](https://godoc.org/github.com/Gnouc/gogi?status.svg)](https://godoc.org/github.com/Gnouc/gogi)
 
 #Why gogi?
 
