@@ -43,7 +43,7 @@ func main() {
 
 ## As binary:
 ```sh
-$ go get github.com/Gnouc/gogi/gogi
+$ go get github.com/Gnouc/gogi/cmd/gogi
 $ gogi
 Usage of gogi:
   -create string
