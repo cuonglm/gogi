@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	version       = "0.0.1"
+	version       = "0.0.2"
 	ua            = "gogi/" + version
 	defaultAPIURL = "https://www.gitignore.io"
 	typePath      = "/api"
