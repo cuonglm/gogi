@@ -16,7 +16,7 @@ go get -u github.com/Gnouc/gogi
 #Usage
 
 ## As library
-```sh
+```go
 import (
 	"fmt"
 	"io/ioutil"
@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	gogiClient := gogi.NewHTTPClient(nil)
+	gogiClient, _ := gogi.NewHTTPClient()
 	resp, _ := gogiClient.List()
 	body, err := ioutil.ReadAll(resp.Body)
 	if body != nil {
