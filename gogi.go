@@ -1,10 +1,9 @@
 package gogi
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"net/url"
-	"os"
 )
 
 const (
@@ -12,7 +11,6 @@ const (
 	ua            = "gogi/" + version
 	defaultAPIURL = "https://www.gitignore.io"
 	typePath      = "/api"
-	envAPIURL     = "GOGI_API_URL"
 )
 
 // Client for querying API
@@ -23,27 +21,54 @@ type Client struct {
 }
 
 // NewHTTPClient create new gogi client
-func NewHTTPClient(client *http.Client) *Client {
-	if client == nil {
-		client = http.DefaultClient
-	}
-
-	apiURLStr := os.Getenv(envAPIURL)
-	if apiURLStr == "" {
-		apiURLStr = defaultAPIURL
-	}
-	apiURL, err := url.Parse(apiURLStr)
-	if err != nil {
-		panic(err)
-	}
+func NewHTTPClient(options ...func(*Client) error) (*Client, error) {
 
 	c := &Client{
-		client:    client,
+		client:    http.DefaultClient,
 		UserAgent: ua,
-		APIURL:    apiURL,
 	}
 
-	return c
+	// Default API url
+	err := APIUrl(defaultAPIURL)(c)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, option := range options {
+		err := option(c)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return c, nil
+}
+
+// APIUrl sets the API url option for gogi client
+func APIUrl(u string) func(*Client) error {
+	return func(c *Client) error {
+		apiURL, err := url.Parse(u)
+		if err != nil {
+			return err
+		}
+
+		c.APIURL = apiURL
+
+		return nil
+	}
+}
+
+// HTTPClient sets the client option for gogi client
+func HTTPClient(client *http.Client) func(*Client) error {
+	return func(c *Client) error {
+		if client == nil {
+			return errors.New("client is nil")
+		}
+
+		c.client = client
+
+		return nil
+	}
 }
 
 // NewRequest create new http request
@@ -68,38 +93,6 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 // Do make an http request
 func (c *Client) Do(req *http.Request) (resp *http.Response, err error) {
 	resp, err = c.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// List list all defined gitignore types
-func (c *Client) List() (*http.Response, error) {
-	path := fmt.Sprintf("%s/list", typePath)
-	req, err := c.NewRequest("GET", path, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := c.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// Create create .gitignore content for input type
-func (c *Client) Create(typeName string) (*http.Response, error) {
-	path := fmt.Sprintf("%s/%s", typePath, typeName)
-	req, err := c.NewRequest("GET", path, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}

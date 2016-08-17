@@ -1,7 +1,6 @@
 package gogi
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -20,7 +19,7 @@ func setUp() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 
-	client = NewHTTPClient(nil)
+	client, _ = NewHTTPClient()
 	url, _ := url.Parse(server.URL)
 	client.APIURL = url
 }
@@ -31,19 +30,19 @@ func tearDown() {
 
 func assertEqual(t *testing.T, result interface{}, expect interface{}) {
 	if result != expect {
-		t.Errorf("Expect (Value: %v) (Type: %T) - Got (Value: %v) (Type: %T)", expect, expect, result, result)
+		t.Fatalf("Expect (Value: %v) (Type: %T) - Got (Value: %v) (Type: %T)", expect, expect, result, result)
 	}
 }
 
 func TestNewHTTPClient(t *testing.T) {
-	c := NewHTTPClient(nil)
+	c, _ := NewHTTPClient()
 
 	assertEqual(t, c.UserAgent, ua)
 	assertEqual(t, c.APIURL.String(), defaultAPIURL)
 }
 
 func TestNewrequest(t *testing.T) {
-	c := NewHTTPClient(nil)
+	c, _ := NewHTTPClient()
 
 	req, _ := c.NewRequest("GET", "/foo", nil)
 	assertEqual(t, req.URL.String(), defaultAPIURL+"/foo")
@@ -76,62 +75,24 @@ func TestDo(t *testing.T) {
 	res := string(body)
 	expected := "foo"
 	if !reflect.DeepEqual(res, expected) {
-		t.Errorf("Expected %v - Got %v", expected, res)
+		t.Fatalf("Expected %v - Got %v", expected, res)
 	}
 }
 
-func TestList(t *testing.T) {
-	setUp()
-	defer tearDown()
-
-	path := fmt.Sprintf("%s/list", typePath)
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-		assertEqual(t, r.Method, "GET")
-
-		_, _ = w.Write([]byte("test list"))
-	})
-
-	resp, err := client.List()
-	if err != nil {
-		t.Fatalf("List(): %v", err)
+func TestAPIUrl(t *testing.T) {
+	c, _ := NewHTTPClient()
+	u := "http://cuonglm.xyz"
+	if err := APIUrl(u)(c); err != nil {
+		t.Fatalf("APIUrl() %+v", err)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatalf("List(): %v", err)
-	}
-
-	res := string(body)
-	expected := "test list"
-	if !reflect.DeepEqual(res, expected) {
-		t.Errorf("Expected %v - Got %v", expected, res)
-	}
+	assertEqual(t, c.APIURL.String(), u)
 }
 
-func TestCreate(t *testing.T) {
-	setUp()
-	defer tearDown()
+func TestHTTPClient(t *testing.T) {
+	c, _ := NewHTTPClient()
 
-	path := fmt.Sprintf("%s/foo", typePath)
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
-		assertEqual(t, r.Method, "GET")
-
-		_, _ = w.Write([]byte("test create foo"))
-	})
-
-	resp, err := client.Create("foo")
-	if err != nil {
-		t.Fatalf("Create(): %v", err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatalf("Create(): %v", err)
-	}
-
-	res := string(body)
-	expected := "test create foo"
-	if !reflect.DeepEqual(res, expected) {
-		t.Errorf("Expected %v - Got %v", expected, res)
+	if err := HTTPClient(nil)(c); err == nil {
+		t.Fatal("APIUrl() want error, got nil")
 	}
 }

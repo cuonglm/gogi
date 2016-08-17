@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/Gnouc/gogi"
@@ -16,6 +17,8 @@ var (
 	createFlag string
 	searchFlag string
 	gogiClient *gogi.Client
+	err        error
+	apiURL     string
 )
 
 func init() {
@@ -23,7 +26,15 @@ func init() {
 	flag.StringVar(&createFlag, "create", "", "Create .gitignore content for given types")
 	flag.StringVar(&searchFlag, "search", "", "Show all types match string")
 
-	gogiClient = gogi.NewHTTPClient(nil)
+	apiURL = os.Getenv("GOGI_API_URL")
+	if apiURL == "" {
+		gogiClient, _ = gogi.NewHTTPClient()
+	} else {
+		gogiClient, err = gogi.NewHTTPClient(gogi.APIUrl(apiURL))
+		if err != nil {
+			panic(err)
+		}
+	}
 }
 
 func main() {
