@@ -30,7 +30,7 @@ func init() {
 	if apiURL == "" {
 		gogiClient, _ = gogi.NewHTTPClient()
 	} else {
-		gogiClient, err = gogi.NewHTTPClient(gogi.APIUrl(apiURL))
+		gogiClient, err = gogi.NewHTTPClient(gogi.WithAPIUrl(apiURL))
 		if err != nil {
 			panic(err)
 		}

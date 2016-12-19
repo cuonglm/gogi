@@ -79,20 +79,20 @@ func TestDo(t *testing.T) {
 	}
 }
 
-func TestAPIUrl(t *testing.T) {
+func TestWithAPIUrl(t *testing.T) {
 	c, _ := NewHTTPClient()
 	u := "http://cuonglm.xyz"
-	if err := APIUrl(u)(c); err != nil {
+	if err := WithAPIUrl(u)(c); err != nil {
 		t.Fatalf("APIUrl() %+v", err)
 	}
 
 	assertEqual(t, c.APIURL.String(), u)
 }
 
-func TestHTTPClient(t *testing.T) {
+func TestWithHTTPClient(t *testing.T) {
 	c, _ := NewHTTPClient()
 
-	if err := HTTPClient(nil)(c); err == nil {
+	if err := WithHTTPClient(nil)(c); err == nil {
 		t.Fatal("APIUrl() want error, got nil")
 	}
 }

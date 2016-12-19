@@ -29,7 +29,7 @@ func NewHTTPClient(options ...func(*Client) error) (*Client, error) {
 	}
 
 	// Default API url
-	err := APIUrl(defaultAPIURL)(c)
+	err := WithAPIUrl(defaultAPIURL)(c)
 	if err != nil {
 		return nil, err
 	}
@@ -44,8 +44,8 @@ func NewHTTPClient(options ...func(*Client) error) (*Client, error) {
 	return c, nil
 }
 
-// APIUrl sets the API url option for gogi client
-func APIUrl(u string) func(*Client) error {
+// WithAPIUrl sets the API url option for gogi client
+func WithAPIUrl(u string) func(*Client) error {
 	return func(c *Client) error {
 		apiURL, err := url.Parse(u)
 		if err != nil {
@@ -58,8 +58,8 @@ func APIUrl(u string) func(*Client) error {
 	}
 }
 
-// HTTPClient sets the client option for gogi client
-func HTTPClient(client *http.Client) func(*Client) error {
+// WithHTTPClient sets the client option for gogi client
+func WithHTTPClient(client *http.Client) func(*Client) error {
 	return func(c *Client) error {
 		if client == nil {
 			return errors.New("client is nil")
