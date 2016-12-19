@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.0.3
+
+Better naming for functional option, backward incompatible
+
 ## 0.0.2
 
-API huge change, backward incompatibel
+API huge change, backward incompatible
 
  - More sensible package layout
  - Using functional options
