@@ -1,19 +1,19 @@
-#gogi - Go client for gitignore.io
+# gogi - Go client for gitignore.io
 
 [![Build Status](https://travis-ci.org/Gnouc/gogi.svg?branch=master)](https://travis-ci.org/Gnouc/gogi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Gnouc/gogi)](https://goreportcard.com/report/github.com/Gnouc/gogi)
 [![GoDoc](https://godoc.org/github.com/Gnouc/gogi?status.svg)](https://godoc.org/github.com/Gnouc/gogi)
 
-#Why gogi?
+# Why gogi?
 
 Make gitignore client more portable, without relying on the shell, curl, wget or any other http client.
 
-#Installation
+# Installation
 ```sh
 go get -u github.com/Gnouc/gogi
 ```
 
-#Usage
+# Usage
 
 ## As library
 ```go
@@ -76,14 +76,14 @@ Building binary image
 docker run --rm gogi-builder | docker build -t gogi -f Dockerfile.run -
 ```
 
-#Environment variables
+# Environment variables
 
 `GOGI_API_URL` to change your gitignore server, default to https://www.gitignore.io
 
-#Author
+# Author
 
 Cuong Manh Le <cuong.manhle.vn@gmail.com>
 
-#License
+# License
 
 See [LICENSE](https://github.com/Gnouc/gogi/blob/master/LICENSE)
