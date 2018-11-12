@@ -29,12 +29,11 @@ func main() {
 	gogiClient, _ := gogi.NewHTTPClient()
 	resp, _ := gogiClient.List()
 	body, err := ioutil.ReadAll(resp.Body)
-	if body != nil {
-		defer resp.Body.Close()
-	}
-
 	if err != nil {
 		log.Fatal(err)
+	}
+    if body != nil {
+		defer resp.Body.Close()
 	}
 
 	fmt.Println(string(body))
