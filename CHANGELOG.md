@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.4
+
+Backward incompatible
+
+gogi API does not expose underlying http response anymore.
+
 ## 0.0.3
 
 Better naming for functional option, backward incompatible
