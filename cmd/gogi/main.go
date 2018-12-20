@@ -3,9 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"strings"
 
@@ -61,20 +59,28 @@ func main() {
 }
 
 func list() {
-	resp, _ := gogiClient.List()
-	data := extractResponse(resp)
+	data, err := gogiClient.List()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println(data)
 }
 
 func create(s string) {
-	resp, _ := gogiClient.Create(s)
-	data := extractResponse(resp)
+	data, err := gogiClient.Create(s)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println(data)
 }
 
 func search(s string) {
-	resp, _ := gogiClient.List()
-	data := extractResponse(resp)
+	data, err := gogiClient.List()
+	if err != nil {
+		log.Fatal(err)
+	}
 	data = strings.Replace(data, "\n", ",", -1)
 
 	for _, v := range strings.Split(data, ",") {
@@ -82,19 +88,4 @@ func search(s string) {
 			fmt.Println(v)
 		}
 	}
-}
-
-func extractResponse(resp *http.Response) string {
-	body, err := ioutil.ReadAll(resp.Body)
-	if body != nil {
-		defer func() {
-			_ = resp.Body.Close()
-		}()
-	}
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return string(body)
 }
