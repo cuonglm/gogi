@@ -19,7 +19,6 @@ go get -u github.com/Gnouc/gogi
 ```go
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 
 	"github.com/Gnouc/gogi"
@@ -27,16 +26,12 @@ import (
 
 func main() {
 	gogiClient, _ := gogi.NewHTTPClient()
-	resp, _ := gogiClient.List()
-	body, err := ioutil.ReadAll(resp.Body)
+	data, err := gogiClient.List()
 	if err != nil {
 		log.Fatal(err)
 	}
-    if body != nil {
-		defer resp.Body.Close()
-	}
 
-	fmt.Println(string(body))
+	fmt.Println(data)
 }
 ```
 
