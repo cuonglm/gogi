@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Gnouc/gogi"
+	"github.com/cuonglm/gogi"
 )
 
 var (
