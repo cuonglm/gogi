@@ -9,7 +9,7 @@ import (
 const (
 	version       = "0.0.4"
 	ua            = "gogi/" + version
-	defaultAPIURL = "https://www.gitignore.io"
+	defaultAPIURL = "https://www.toptal.com/developers/gitignore"
 	typePath      = "/api"
 )
 
