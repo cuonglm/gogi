@@ -1,8 +1,8 @@
 # gogi - Go client for gitignore.io
 
-[![Build Status](https://travis-ci.org/cuonglm/gogi.svg?branch=master)](https://travis-ci.org/cuonglm/gogi)
+![Build Status](https://github.com/cuonglm/gogi/actions/workflows/test.yml/badge.svg?branch=master)
+[![Go Reference](https://pkg.go.dev/badge/github.com/cuonglm/gogi.svg)](https://pkg.go.dev/github.com/cuonglm/gogi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cuonglm/gogi)](https://goreportcard.com/report/github.com/cuonglm/gogi)
-[![GoDoc](https://godoc.org/github.com/cuonglm/gogi?status.svg)](https://godoc.org/github.com/cuonglm/gogi)
 
 # Why gogi?
 
