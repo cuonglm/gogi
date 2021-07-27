@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	version       = "0.0.4"
+	version       = "v1"
 	ua            = "gogi/" + version
 	defaultAPIURL = "https://www.toptal.com"
 	typePath      = "/developers/gitignore/api"

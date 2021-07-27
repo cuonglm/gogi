@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -28,25 +30,19 @@ func tearDown() {
 	server.Close()
 }
 
-func assertEqual(t *testing.T, result interface{}, expect interface{}) {
-	if result != expect {
-		t.Fatalf("Expect (Value: %v) (Type: %T) - Got (Value: %v) (Type: %T)", expect, expect, result, result)
-	}
-}
-
 func TestNewHTTPClient(t *testing.T) {
 	c, _ := NewHTTPClient()
 
-	assertEqual(t, c.UserAgent, ua)
-	assertEqual(t, c.APIURL.String(), defaultAPIURL)
+	assert.Equal(t, ua, c.UserAgent)
+	assert.Equal(t, defaultAPIURL, c.APIURL.String())
 }
 
 func TestNewrequest(t *testing.T) {
 	c, _ := NewHTTPClient()
-
 	req, _ := c.NewRequest("GET", "/foo", nil)
-	assertEqual(t, req.URL.String(), defaultAPIURL+"/foo")
-	assertEqual(t, req.Header.Get("User-Agent"), ua)
+
+	assert.Equal(t, defaultAPIURL+"/foo", req.URL.String())
+	assert.Equal(t, ua, req.Header.Get("User-Agent"))
 }
 
 func TestDo(t *testing.T) {
@@ -54,45 +50,33 @@ func TestDo(t *testing.T) {
 	defer tearDown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		assertEqual(t, r.Method, "GET")
+		assert.Equal(t, "GET", r.Method)
 
 		_, _ = w.Write([]byte("foo"))
 	})
 
-	req, _ := client.NewRequest("GET", "/", nil)
+	req, err := client.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 
 	resp, err := client.Do(req)
-
-	if err != nil {
-		t.Fatalf("Do(): %v", err)
-	}
+	require.NoError(t, err)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatalf("Do(): %v", err)
-	}
+	require.NoError(t, err)
 
 	res := string(body)
 	expected := "foo"
-	if !reflect.DeepEqual(res, expected) {
-		t.Fatalf("Expected %v - Got %v", expected, res)
-	}
+	assert.Equal(t, expected, res)
 }
 
 func TestWithAPIUrl(t *testing.T) {
 	c, _ := NewHTTPClient()
-	u := "http://cuonglm.xyz"
-	if err := WithAPIUrl(u)(c); err != nil {
-		t.Fatalf("APIUrl() %+v", err)
-	}
-
-	assertEqual(t, c.APIURL.String(), u)
+	u := "https://cuonglm.xyz"
+	require.NoError(t, WithAPIUrl(u)(c))
+	assert.Equal(t, u, c.APIURL.String())
 }
 
 func TestWithHTTPClient(t *testing.T) {
 	c, _ := NewHTTPClient()
-
-	if err := WithHTTPClient(nil)(c); err == nil {
-		t.Fatal("APIUrl() want error, got nil")
-	}
+	require.Error(t, WithHTTPClient(nil)(c))
 }
