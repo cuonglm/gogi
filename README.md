@@ -1,6 +1,6 @@
 # gogi - Go client for gitignore.io
 
-![Build Status](https://github.com/cuonglm/gogi/actions/workflows/ci.yml/badge.svg?branch=master)
+![Build Status](https://github.com/cuonglm/gogi/actions/workflows/ci.yml/badge.svg?branch=main)
 [![Go Reference](https://pkg.go.dev/badge/github.com/cuonglm/gogi.svg)](https://pkg.go.dev/github.com/cuonglm/gogi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cuonglm/gogi)](https://goreportcard.com/report/github.com/cuonglm/gogi)
 
@@ -80,4 +80,4 @@ Cuong Manh Le <cuong.manhle.vn@gmail.com>
 
 # License
 
-See [LICENSE](https://github.com/cuonglm/gogi/blob/master/LICENSE)
+See [LICENSE](https://github.com/cuonglm/gogi/blob/main/LICENSE)
